@@ -1,9 +1,12 @@
 import express, { json } from "express";
 import { booksRouter } from "./routes/books.routes";
-import { BooksErrors } from "./errors/errors.middleware";
+import helmet from "helmet";
+import { GlobalErrors } from "./errors/errors.middleware";
 
 export const app = express();
-const booksErrors = new BooksErrors();
+const booksErrors = new GlobalErrors();
+
+app.use(helmet());
 
 app.use(json());
 

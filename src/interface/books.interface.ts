@@ -1,14 +1,23 @@
-interface Book{
-    id:number;
-    name:string;
-    pages:number;
-    category?:string;
-    createdAt: Date;
-    updatedAt:Date;
+import { AnyZodObject, z } from "zod";
+import {
+  bookSchema,
+  createBookSchema,
+  querySchema,
+  updateBookSchema,
+} from "../schemas/bookSchemas";
+
+type Book = z.infer<typeof bookSchema>;
+
+type CreateBook = z.infer<typeof createBookSchema>;
+
+type UpdateBook = z.infer<typeof updateBookSchema>;
+
+type QueryBook = z.infer<typeof querySchema>;
+
+interface IRequestSchema {
+  params?: AnyZodObject;
+  body?: AnyZodObject;
+  query?: AnyZodObject;
 }
 
-type CreateBook = Pick<Book, "name" | "pages" | "category">;
-
-type UpdateBook = Partial<CreateBook>;
-
-export {Book,CreateBook,UpdateBook};
+export { Book, CreateBook, UpdateBook, IRequestSchema, QueryBook };

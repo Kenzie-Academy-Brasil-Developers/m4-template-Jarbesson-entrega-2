@@ -1,42 +1,44 @@
-import { Request, Response } from "express";
+import { Request, Response, query } from "express";
 import { BookServices } from "../services/books.services";
 
 export class BookControllers {
-    private bookService = new BookServices();
+  private bookService = new BookServices();
 
-    createBook = (req: Request, res: Response): Response => {
-        const newBook = this.bookService.createBook(req.body);
+  createBook = (req: Request, res: Response): Response => {
+    const newBook = this.bookService.createBook(req.body);
 
-        return res.status(201).json(newBook);
-    };
+    return res.status(201).json(newBook);
+  };
 
-    getBooks =  (req: Request, res: Response): Response => {
-        const AllBooks = this.bookService.getBooks();
+  getBooks = (req: Request, res: Response): Response => {
+    const name = req.query.search as string | undefined;
 
-        return res.status(200).json(AllBooks);
-    };
+    const AllBooks = this.bookService.getBooks(name);
 
-    retreieveBook =  (req: Request, res: Response): Response =>{
-        const index = res.locals.bookIndex;
+    return res.status(200).json(AllBooks);
+  };
 
-        const bookFound = this.bookService.retrieveBook(index);
+  retreieveBook = (req: Request, res: Response): Response => {
+    const index = res.locals.bookIndex;
 
-        return res.status(200).json(bookFound);
-    };
+    const bookFound = this.bookService.retrieveBook(index);
 
-    updateBook =  (req: Request, res: Response): Response => {
-        const index = res.locals.bookIndex;
+    return res.status(200).json(bookFound);
+  };
 
-        const updateBook = this.bookService.updateBook(index, req.body);
+  updateBook = (req: Request, res: Response): Response => {
+    const index = res.locals.bookIndex;
 
-        return res.status(200).json(updateBook);
-    };
+    const updateBook = this.bookService.updateBook(index, req.body);
 
-    deleteBook = (req: Request, res: Response): Response => {
-        const index = res.locals.bookIndex;
+    return res.status(200).json(updateBook);
+  };
 
-        this.bookService.deleteBook(index);
+  deleteBook = (req: Request, res: Response): Response => {
+    const index = res.locals.bookIndex;
 
-        return res.status(204).send();
-    };
-};
+    this.bookService.deleteBook(index);
+
+    return res.status(204).send();
+  };
+}
